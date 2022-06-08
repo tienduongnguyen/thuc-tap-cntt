@@ -1,0 +1,26 @@
+{
+  "name": "phanhaihong",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon main.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jimp": "^0.16.1",
+    "keccak256": "^1.0.6",
+    "path": "^0.12.7",
+    "qrcode-reader": "^1.0.4",
+    "web3": "^1.7.3",
+    "winston": "^3.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "request": "^2.88.2",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.4.0"
+  }
+}
