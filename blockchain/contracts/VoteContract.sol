@@ -1,53 +1,63 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract VoteContract is ERC721, ERC721URIStorage, ERC721Enumerable {
-    mapping(string => uint256) internal voteFor;
+contract VoteContract is ERC721, ERC721Enumerable, Ownable {
+    struct Vote {
+        string hashId;
+        uint256 option;
+    }
+
+    mapping(uint256 => Vote) public voteIndex;
 
     constructor() ERC721("2022 Presidential Election", "GOV") {}
 
-    function stringToBytes(string memory a) internal pure returns(bytes32){
+    function stringToBytes(string memory a) internal pure returns (bytes32) {
         return keccak256(abi.encodePacked(a));
     }
 
-    function mint(uint256 tokenId, string memory _tokenURI, uint256 option) public {
-        require(_msgSender() == 0x06309b3B3cf2d6fb5CD0bc0E47f8852f2a2b44e6, "You are not allowed");
-        bytes32 _bytesTokenURI = stringToBytes(_tokenURI);
+    function exists(string memory _hashId) internal view returns (bool) {
+        bytes32 _bytesTokenURI = stringToBytes(_hashId);
         for (uint256 i = 1; i <= totalSupply(); i++) {
-            require(stringToBytes(tokenURI(i)) != _bytesTokenURI, "Already Voted!!!");
+            if (stringToBytes(hashIdOfTokenId(i)) == _bytesTokenURI) return true; 
         }
-        _mint(_msgSender(), tokenId);
-        _setTokenURI(tokenId, _tokenURI);
-        voteFor[_tokenURI] = option;
+        return false;
     }
 
-    function tokenURI(uint256 tokenId)
+    function mint(uint256 tokenId, string memory _hashId, uint256 option) public onlyOwner {
+        require(!exists(_hashId), "Already Voted");
+        _mint(_msgSender(), tokenId);
+        voteIndex[tokenId-1] = Vote(_hashId, option);
+    }
+
+    function hashIdOfTokenId(uint256 tokenId)
         public
         view
-        override(ERC721, ERC721URIStorage)
         returns (string memory)
     {
-        return super.tokenURI(tokenId);
+        return voteIndex[tokenId-1].hashId;
     }
 
-    function voteOfTokenId(uint256 tokenId)
+    function optionOfTokenId(uint256 tokenId)
         public
         view
         returns (uint256)
     {
-        string memory uri = tokenURI(tokenId);
-        return voteFor[uri];
+        return voteIndex[tokenId-1].option;
     }
 
-    function voteOfURI(string memory uri)
+    function optionOfHashId(string memory _hashId)
         public
         view
         returns (uint256)
     {
-        return voteFor[uri];
+        bytes32 _bytesHashId = stringToBytes(_hashId);
+        for (uint256 i = 1; i <= totalSupply(); i++) {
+            if (stringToBytes(hashIdOfTokenId(i)) == _bytesHashId) return voteIndex[i-1].option; 
+        }
+        return 0;
     }
 
     function _beforeTokenTransfer(
@@ -60,7 +70,7 @@ contract VoteContract is ERC721, ERC721URIStorage, ERC721Enumerable {
 
     function _burn(uint256 tokenId)
         internal
-        override(ERC721, ERC721URIStorage)
+        override(ERC721)
     {
         super._burn(tokenId);
     }
