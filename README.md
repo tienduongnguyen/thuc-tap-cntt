@@ -14,4 +14,4 @@ $ yarn
 $ yarn start
 ```
 ### Usage:
-Open Swagger UI at: (localhost:8088/docs)
+Open Swagger UI at: [API](localhost:8088/docs)
