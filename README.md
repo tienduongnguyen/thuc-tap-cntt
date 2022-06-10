@@ -14,4 +14,4 @@ $ yarn
 $ yarn start
 ```
 ### Usage:
-Open Swagger UI at: [This link will open SwaggerUI at port 8088](localhost:8088/docs)
+Open Swagger UI at: (localhost:8088/docs)
