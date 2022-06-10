@@ -14,4 +14,4 @@ $ yarn
 $ yarn start
 ```
 ### Usage:
-Open Swagger UI at: [API](https://github.com/tienduongnguyen/thuc-tap-cntt/)
+Open Swagger UI at: [API](http://localhost:8088/docs)
