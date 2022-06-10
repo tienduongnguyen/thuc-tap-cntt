@@ -4,11 +4,11 @@ const {
   PRIVATE_KEY,
   MY_ADDRESS,
   CONTRACT_ADDRESS,
+  ABI,
 } = require("./utils/constants");
 const keccak256 = require("keccak256");
 const web3 = new Web3(RINKEBY_URL);
-const abi = require("./utils/VoteContract.json").abi;
-const contract = new web3.eth.Contract(abi, CONTRACT_ADDRESS);
+const contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS);
 
 const signAndSendTransaction = async (data) => {
   try {
@@ -45,4 +45,18 @@ const mint = async (tokenId, uri, option) => {
   }
 };
 
-mint(2, "duong", 3);
+// mint(2, "duong", 3);
+
+// const main = async () => {
+//   const res = await contract.methods.supply().call();
+//   console.log(res);
+// };
+
+// main();
+
+// const today = new Date(1654827828374);
+// console.log(today.toString().substring(0, 31));
+
+let res = 3;
+console.log(res++);
+console.log(res);

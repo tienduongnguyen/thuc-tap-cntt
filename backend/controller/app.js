@@ -10,12 +10,12 @@ const {
   PRIVATE_KEY,
   MY_ADDRESS,
   CONTRACT_ADDRESS,
+  ABI,
   IMG_PATH,
 } = require("../utils/constants");
 const keccak256 = require("keccak256");
 const web3 = new Web3(RINKEBY_URL);
-const abi = require("../utils/VoteContract.json").abi;
-const contract = new web3.eth.Contract(abi, CONTRACT_ADDRESS);
+const contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS);
 
 module.exports = {
   Voting: async (req, res) => {
@@ -83,24 +83,11 @@ module.exports = {
         }
       };
 
-      const mint = async (tokenId, uri, option) => {
+      const vote = async (hashId, option) => {
         try {
-          const data = contract.methods.mint(tokenId, uri, option).encodeABI();
+          const data = contract.methods.vote(hashId, option).encodeABI();
           const tx = await signAndSendTransaction(data);
           return tx;
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      const isVoted = async (id) => {
-        try {
-          const listToken = await contract.methods.allTokens().call();
-          for (let i = 0; i < listToken.length; i++) {
-            let uri = await contract.methods.tokenURI(listToken[i]).call();
-            if (uri == id) return true;
-          }
-          return false;
         } catch (error) {
           console.log(error);
         }
@@ -109,13 +96,12 @@ module.exports = {
       const { image_url, option } = req.body;
       const data = await scan(image_url);
       const hashId = "0x" + keccak256(data[0]).toString("hex");
-      const status = await isVoted(hashId);
+      console.log(hashId);
+      const status = await contract.methods.exists(hashId).call();
       if (status) {
         res.json(onError("You have already voted"));
       } else {
-        const tokenId =
-          parseInt(await contract.methods.totalSupply().call()) + 1;
-        const txhash = await mint(tokenId, hashId, option);
+        const txhash = await vote(hashId, option);
         res.json(
           onSuccess({
             "Transaction hash": txhash.toString(),
@@ -167,19 +153,6 @@ module.exports = {
         return result;
       };
 
-      const isVoted = async (id) => {
-        try {
-          const listToken = await contract.methods.allTokens().call();
-          for (let i = 0; i < listToken.length; i++) {
-            let uri = await contract.methods.tokenURI(listToken[i]).call();
-            if (uri == id) return true;
-          }
-          return false;
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
       const toDate = (str) => {
         return (
           str[0] +
@@ -198,20 +171,20 @@ module.exports = {
       const image_url = req.query.image_url;
       const data = await scan(image_url);
       const hashId = "0x" + keccak256(data[0]).toString("hex");
+      const status = await contract.methods.exists(hashId).call();
       let info = {
         Id: data[0],
         Name: data[2],
         "Date of Birth": toDate(data[3]),
         "Hash-id": hashId,
       };
-      const status = await isVoted(hashId);
       if (!status) {
         info["Is Voted"] = false;
         info["Vote for"] = null;
         res.json(onSuccess(info));
       } else {
         info["Is Voted"] = true;
-        const voteFor = await contract.methods.voteOfURI(hashId).call();
+        const voteFor = await contract.methods.hashIdOption(hashId).call();
         info["Vote for"] = parseInt(voteFor);
         res.json(onSuccess(info));
       }
@@ -222,22 +195,20 @@ module.exports = {
   },
   CountVoted: async (req, res) => {
     try {
-      const listToken = await contract.methods.allTokens().call();
+      const supply = await contract.methods.supply().call();
       let count = [0, 0, 0, 0];
-      for (let i = 0; i < listToken.length; i++) {
-        const voteFor = await contract.methods
-          .voteOfTokenId(listToken[i])
-          .call();
-        if (voteFor == 1) {
+      for (let i = 0; i < supply; i++) {
+        const option = (await contract.methods.voteByIndex(i).call()).option;
+        if (option == 1) {
           count[0]++;
         }
-        if (voteFor == 2) {
+        if (option == 2) {
           count[1]++;
         }
-        if (voteFor == 3) {
+        if (option == 3) {
           count[2]++;
         }
-        if (voteFor == 4) {
+        if (option == 4) {
           count[3]++;
         }
       }
@@ -252,11 +223,10 @@ module.exports = {
   ListVoted: async (req, res) => {
     try {
       let data = {};
-      const listToken = await contract.methods.allTokens().call();
-      for (let i = 0; i < listToken.length; i++) {
-        let hashId = await contract.methods.tokenURI(listToken[i]).call();
-        let option = await contract.methods.voteOfURI(hashId).call();
-        data[hashId] = option;
+      const supply = await contract.methods.supply().call();
+      for (let i = 0; i < supply; i++) {
+        let vote = await contract.methods.voteByIndex(i).call();
+        data[vote.hashId] = vote.option;
       }
       res.json(onSuccess(data));
     } catch (error) {
