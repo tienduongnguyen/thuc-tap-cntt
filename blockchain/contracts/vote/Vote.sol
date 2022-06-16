@@ -1,90 +1,78 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "../government/IGovernment.sol";
 import "./IVote.sol";
 
 contract Vote is IVote {
-    using Counters for Counters.Counter;
-    Counters.Counter private _index;
-
-    modifier onlyGovernment() {
-        require(msg.sender == 0x06309b3B3cf2d6fb5CD0bc0E47f8852f2a2b44e6, "You're not allowed");
-        _;
-    }
-
-    mapping(uint256 => address) public government;
-    uint256 private indexGOV;
-    mapping(string => address) public local;
-    mapping(uint256 => TheVote) public voteIndex;
+    
+    mapping(string => VoteInfo) private TheVote;
+    mapping(uint256 => string) private VoteIndex;
+    mapping(uint256 => uint256) private Counter;
     string private _name;
+    uint256 private _supply;
+    address private _governmentContract;
 
-    constructor() {
+    constructor(address governmentAddress) {
         _name = "2022 Presidential Election";
-        indexGOV = 0;
-        government[indexGOV++] = msg.sender;
+        _supply = 0;
+        _governmentContract = governmentAddress;
     }
 
-    function stringToBytes(string memory a) internal pure returns (bytes32) {
-        return keccak256(abi.encodePacked(a));
+    function exist(string memory hashId) public view returns (bool) {
+        return TheVote[hashId].voted;
     }
 
-    function isAllowed(address _address) internal view returns (bool) {
-        for (uint256 i=0; i<=indexGOV; i++) {
-            if (_address == government[i]) return true;
-        }
-        return false;
+    function vote(string memory hashId, uint256 option, uint256 time) public {
+        require(isAllowed(msg.sender), "You're not allowed !!!");
+        require(!exist(hashId), "You have already voted !!!");
+        TheVote[hashId] = VoteInfo(true, option, time);
+        VoteIndex[_supply++] = hashId;
+        Counter[option]++;
     }
 
-    function exists(string memory hashId) public view returns (bool) {
-        bytes32 _bytesHashId = stringToBytes(hashId);
-        for (uint256 i = 0; i < supply(); i++) {
-            if (stringToBytes(hashIdByIndex(i)) == _bytesHashId) return true; 
-        }
-        return false;
+    function hashIdVote(string memory hashId) public override view returns (VoteInfo memory) {
+        require(exist(hashId), "You haven't voted yet !!!");
+        return TheVote[hashId];
     }
 
-    function addAllowance(address _address, string memory _local) 
-        public onlyGovernment 
-    {
-        government[indexGOV++] = _address;
-        local[_local] = _address;
+    function hashIdOption(string memory hashId) public override view returns (uint256) {
+        require(exist(hashId), "You haven't voted yet !!!");
+        return TheVote[hashId].option;
     }
 
-    function vote(string memory hashId, uint256 option) public onlyGovernment {
-        require(!exists(hashId), "This Hash Id have already voted !!!");
-        uint256 index = _index.current();
-        voteIndex[index] = TheVote(hashId, option, block.timestamp);
-        _index.increment();
+    function voteByIndex(uint256 index) public override view returns (VoteInfo memory) {
+        require(index < supply(), "Index is out of range !!!");
+        string memory hashId = VoteIndex[index];
+        return TheVote[hashId];
     }
 
-    function hashIdOption(string memory hashId) public view returns (uint256) {
-        require(exists(hashId), "This Hash Id haven't voted yet !!!"); 
-        bytes32 _bytesHashId = stringToBytes(hashId);
-        for (uint256 i = 0; i < supply(); i++) {
-            if (stringToBytes(hashIdByIndex(i)) == _bytesHashId) 
-                return optionByIndex(i);
-        }
-        return 666;
+    function hashIdByIndex(uint256 index) public override view returns (string memory) {
+        require(index < supply(), "Index is out of range !!!");
+        return VoteIndex[index];
     }
 
-    function name() public view returns (string memory) {
+    function optionCounter(uint256 option) public view returns (uint256) {
+        return Counter[option];
+    }
+
+    function name() public override view returns (string memory) {
         return _name;
     }
 
-    function supply() public view returns (uint256) {
-        return _index.current();
+    function supply() public override view returns (uint256) {
+        return _supply;
     }
 
-    function voteByIndex(uint256 index) public view returns (TheVote memory) {
-        return voteIndex[index];
+    function isAllowed(address _address) public view returns (bool) {
+        return IGovernment(_governmentContract)._isAllowed(_address);
     }
 
-    function hashIdByIndex(uint256 index) public view returns (string memory) {
-        return voteIndex[index].hashId;
+    function addressName(string memory _addressName) public view returns (address) {
+        return IGovernment(_governmentContract)._nameToAddress(_addressName);
     }
 
-    function optionByIndex(uint256 index) public view returns (uint256) {
-        return voteIndex[index].option;
+    function nameAddress(address _address) public view returns (string memory) {
+        return IGovernment(_governmentContract)._addressToName(_address);
     }
 }

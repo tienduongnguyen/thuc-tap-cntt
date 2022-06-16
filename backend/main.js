@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const appRouter = require("./routes/app");
+const userRouter = require("./routes/user");
+const adminRouter = require("./routes/admin");
 const cors = require("cors");
 const PORT = 8088;
 const swaggerUI = require("swagger-ui-express");
@@ -26,7 +27,7 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Library API",
+      title: "2022 Presidential Election API",
       version: "0.1.9",
       description: "Copyright by Nguyen Tien Duong",
     },
@@ -47,9 +48,14 @@ const loggerAuth = (req, res, next) => {
   next();
 };
 
-mainRouter.use("/vote", appRouter);
+mainRouter.use("/vote", userRouter);
+mainRouter.use("/gov", adminRouter);
 app.use("/api/", loggerAuth, mainRouter);
 app.use("/docs/", swaggerUI.serve, swaggerUI.setup(specs));
 
-console.log("Server start at " + new Date().toUTCString(), "PORT", PORT);
+console.log(
+  "Server start at " + new Date().toString().substring(0, 31),
+  "PORT",
+  PORT
+);
 app.listen(PORT);

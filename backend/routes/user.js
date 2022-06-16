@@ -1,17 +1,28 @@
-const request = require("request");
 const express = require("express");
 const router = express.Router();
 const {
+  Scan,
   Voting,
   CheckMyVote,
   CountVoted,
   ListVoted,
-} = require("../controller/app");
+  TotalVoted,
+} = require("../controller/user");
 
 /**
  * @swagger
  * components:
  *  schemas:
+ *      Scan:
+ *        type: object
+ *        required:
+ *          - image_url
+ *        properties:
+ *          image_url:
+ *            type: string
+ *            description: QR code image of citizen identification
+ *        example:
+ *            image_url: "https://gateway.pinata.cloud/ipfs/QmUqZdf9gsusvN3G4bRR6z2iY7urJ1RUvaaKt3wKuoUAoS"
  *      Voting:
  *          type: object
  *          required:
@@ -49,21 +60,52 @@ const {
  *          properties:
  *          example:
  *              null
+ *      Total-supply:
+ *          type: object
+ *          required:
+ *          properties:
+ *          example:
+ *              null
  */
 
 /**
  * @swagger
  * tags:
- *  name: 2022 Presidential Election
- *  description: API
+ *  name: Vote
+ *  description: Users
  */
+
+/**
+ * @swagger
+ * /api/vote/scan:
+ *  get:
+ *      summary: Scan QR code image
+ *      tags: [Vote]
+ *      parameters:
+ *            - in: query
+ *              name: image_url
+ *              schema:
+ *                type: string
+ *              required: true
+ *              description: url of your Id QR image
+ *      responses:
+ *          200:
+ *              description: success
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          items:
+ *                              $ref: '#/components/schemas/Scan'
+ *
+ */
+router.get("/scan", Scan);
 
 /**
  * @swagger
  * /api/vote/voting:
  *  post:
  *      summary: Vote President
- *      tags: [2022 Presidential Election]
+ *      tags: [Vote]
  *      requestBody:
  *            content:
  *              application/json:
@@ -86,7 +128,7 @@ router.post("/voting", Voting);
  * /api/vote/check-my-vote:
  *  get:
  *      summary: Check the vote
- *      tags: [2022 Presidential Election]
+ *      tags: [Vote]
  *      parameters:
  *            - in: query
  *              name: image_url
@@ -110,7 +152,7 @@ router.get("/check-my-vote/", CheckMyVote);
  * /api/vote/count-voted:
  *  get:
  *      summary: List of voted amount
- *      tags: [2022 Presidential Election]
+ *      tags: [Vote]
  *      responses:
  *          200:
  *              description: success
@@ -126,8 +168,8 @@ router.get("/count-voted", CountVoted);
  * @swagger
  * /api/vote/list-voted:
  *  get:
- *      summary: List of Vote
- *      tags: [2022 Presidential Election]
+ *      summary: List of voted
+ *      tags: [Vote]
  *      responses:
  *          200:
  *              description: success
@@ -139,5 +181,23 @@ router.get("/count-voted", CountVoted);
  *
  */
 router.get("/list-voted", ListVoted);
+
+/**
+ * @swagger
+ * /api/vote/total-voted:
+ *  get:
+ *      summary: Total of voted
+ *      tags: [Vote]
+ *      responses:
+ *          200:
+ *              description: success
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          items:
+ *                              $ref: '#/components/schemas/Total-supply'
+ *
+ */
+router.get("/total-voted", TotalVoted);
 
 module.exports = router;
