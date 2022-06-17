@@ -28,7 +28,7 @@ const options = {
     openapi: "3.0.0",
     info: {
       title: "2022 Presidential Election API",
-      version: "0.1.9",
+      version: "0.2.1",
       description: "Copyright by Nguyen Tien Duong",
     },
     servers: [

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="myCenter" tabindex="0">
+        <style>
+          .myCenter {
+            text-align: center;
+            margin-top: 60px;
+            margin-bottom: 35px;
+          }
+          .myTD {
+            text-align: center;
+            width: 390px;
+          }
+          .myBTN {
+            float: right;
+            margin-right: 12px;
+            margin-bottom: 10px;
+          }
+          .mySearch {
+            width: 100px;
+          }
+          .mySpan {
+            margin-bottom: 5px;
+          }
+        </style>
+        <h1>Bầu cử 2022</h1>
+      </div>
+    </div>
+    <div class="container">
+      <div class="myBTN">
+        <button onclick="clearText()" type="submit" class="btn btn-outline-dark btn-sm">Đặt lại</button>
+      </div>
+      <table class="table">
+        <tr>
+          <td>
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th colspan="3" class="myCenter">Chính phủ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Kiểm tra tên của tài khoản</td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Địa chỉ</span>
+                      </div>
+                      <input id="addressName" type="text" class="form-control" aria-label="Small" 
+                            aria-describedby="inputGroup-sizing-sm" placeholder="0xCeA2a20F681169BEe6Cfb04F446b61c5B45cf8E4">
+                    </div>
+                  </td>
+                  <td>
+                    <button onclick="checkNameAddress()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Kiểm tra tài khoản của tên</td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Tên TK</span>
+                      </div>
+                      <input id="nameAddress" type="text" class="form-control" aria-label="Small" 
+                            aria-describedby="inputGroup-sizing-sm" placeholder="Ha Noi">
+                    </div>
+                  </td>
+                  <td>
+                    <button onclick="checkAddressName()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Danh sách tài khoản</td>
+                  <td></td>
+                  <td>
+                    <button onclick="listAddress()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th colspan="3" class="myCenter">Bầu cử</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Quét mã QR</td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Hình ảnh</span>
+                      </div>
+                      <input id="imageScan" type="text" class="form-control" aria-label="Small" 
+                            aria-describedby="inputGroup-sizing-sm" placeholder="https://gateway.pinata.cloud/ipfs/">
+                    </div>
+                  </td>
+                  <td>
+                    <button onclick="scanQrCode()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Bầu cử</td>
+                  <td>
+                    <div class="input-group input-group-sm mySpan">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Hình ảnh</span>
+                      </div>
+                      <input id="imageVote" type="text" class="form-control" aria-label="Small" 
+                            aria-describedby="inputGroup-sizing-sm" placeholder="https://gateway.pinata.cloud/ipfs/">
+                    </div>
+                    <div class="input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Bỏ phiếu</span>
+                      </div>
+                      <input id="optionVote" type="text" class="form-control" aria-label="Small" 
+                            aria-describedby="inputGroup-sizing-sm" placeholder="Nguyen Van A">
+                    </div>
+                  </td>
+                  <td>
+                    <button onclick="vote()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Kiểm tra phiếu bầu</td>
+                  <td>
+                    <div class="input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Hình ảnh</span>
+                      </div>
+                      <input id="imageCheck" type="text" class="form-control" aria-label="Small" 
+                            aria-describedby="inputGroup-sizing-sm" placeholder="https://gateway.pinata.cloud/ipfs/">
+                    </div>
+                  </td>
+                  <td>
+                    <button onclick="checkVote()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Thống kê phiếu bầu</td>
+                  <td></td>
+                  <td>
+                    <button onclick="countVote()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Danh sách phiếu bầu</td>
+                  <td></td>
+                  <td>
+                    <button onclick="listVote()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Tổng số phiếu bầu</td>
+                  <td></td>
+                  <td>
+                    <button onclick="totalVote()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+          <td>
+            <table id="result-p" class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <tr>
+                    <th class="myCenter">Kết quả</th>
+                  </tr>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="result-p-0" class="myTD"></td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+
+  <script>
+    let rows = 1;
+    const clearText = () => {
+      $("#addressName").val("");
+      $("#nameAddress").val("");
+      $("#result-p-0").text("");
+      $("#imageScan").val("");
+      $("#imageVote").val("");
+      $("#optionVote").val("");
+      $("#imageCheck").val("");
+      for (let i=1; i<rows; i++) {
+        $(`#result-p-r-${i}`).remove();
+      }
+      rows = 1;
+    };
+    const initResult = (keys, values) => {
+      $("#result-p-0").text(`${keys[0]}: ${values[0]}`);
+      rows = keys.length;
+      for (let i=1; i<rows; i++) {
+        if (keys[i] == "Vote for") values[i] = idToName(values[i]);
+        $('#result-p tr:last').after(`
+          <tr id="result-p-r-${i}"><td class="myTD">${keys[i]}: ${values[i]}</td></tr>
+        `);
+      }
+    };
+    const initResultForCountVote = (keys, values) => {
+      $("#result-p-0").text(`${idToName(parseInt(keys[0]))}: ${values[0]}`);
+      rows = keys.length;
+      for (let i=1; i<rows; i++) {
+        keys[i] = idToName(parseInt(keys[i]));
+        $('#result-p tr:last').after(`
+          <tr id="result-p-r-${i}"><td class="myTD">${keys[i]}: ${values[i]}</td></tr>
+        `);
+      }
+    };
+    const initResultForListVote = (keys, values) => {
+      $("#result-p-0").text(`${keys[0]} ${idToName(parseInt(values[0]["Vote for"]))} - ${values[0]["Vote at"]}`);
+      rows = keys.length;
+      for (let i=1; i<rows; i++) {
+        let voteFor = idToName(parseInt(values[i]["Vote for"]));
+        let voteAt = values[i]["Vote at"];
+        $('#result-p tr:last').after(`
+          <tr id="result-p-r-${i}"><td class="myTD">${keys[i]} ${voteFor} - ${voteAt}</td></tr>
+        `);
+      }
+    };
+    const idToName = (id) => {
+      if (id == 1) return "Nguyen Van A";
+      if (id == 2) return "Nguyen Van B";
+      if (id == 3) return "Nguyen Van C";
+      if (id == 4) return "Nguyen Van D";
+      if (id == 5) return "Nguyen Van E";
+    };
+    const nameToId = (name) => {
+      if (name == "Nguyen Van A") return 1;
+      if (name == "Nguyen Van B") return 2;
+      if (name == "Nguyen Van C") return 3;
+      if (name == "Nguyen Van D") return 4;
+      if (name == "Nguyen Van E") return 5;
+    };
+    const checkNameAddress = async () => {
+      const query = $("#addressName").val();
+      clearText();
+      $("#addressName").val(query);
+      const url = "http:/localhost:8088/api/gov/name?address=" + query;
+      const response = await fetch(url);
+      const myJson = await response.json();
+      if (myJson.code == 200) $("#result-p-0").text(myJson.data);
+      else alert("Địa chỉ không hợp lệ");
+    };
+    const checkAddressName = async () => {
+      const query = $("#nameAddress").val();
+      clearText();
+      $("#nameAddress").val(query);
+      const url = "http:/localhost:8088/api/gov/address?name=" + query;
+      const response = await fetch(url);
+      const myJson = await response.json();
+      if (myJson.code == 200) $("#result-p-0").text(myJson.data);
+      else alert("Tên không tồn tại");
+    };
+    const listAddress = async () => {
+      clearText();
+      const url = "http:/localhost:8088/api/gov/list";
+      const response = await fetch(url);
+      const myJson = await response.json();
+      const keys = Object.keys(myJson.data);
+      const values = Object.values(myJson.data);
+      initResult(keys, values);
+    };
+    const scanQrCode = async () => {
+      const query = $("#imageScan").val();
+      clearText();
+      $("#imageScan").val(query);
+      const url = "http:/localhost:8088/api/vote/scan?image_url=" + query;
+      const response = await fetch(url);
+      const myJson = await response.json();
+      const keys = Object.keys(myJson.data);
+      const values = Object.values(myJson.data);
+      initResult(keys, values);
+    };
+    const vote = async () => {
+      const query1 = $("#imageVote").val();
+      let query2 = $("#optionVote").val();
+      clearText();
+      $("#imageVote").val(query1);
+      $("#optionVote").val(query2);
+      query2 = nameToId(query2);
+      console.log(query2);
+      $.post("http:/localhost:8088/api/vote/voting",
+      {
+        image_url: query1,
+        option: parseInt(query2),
+      }, function (res, status) {
+        const keys = Object.keys(res.data);
+        const values = Object.values(res.data);
+        alert("Bạn đã bầu cử thành công")
+        initResult(keys, values);
+      });
+    };
+    const checkVote = async () => {
+      const query = $("#imageCheck").val();
+      clearText();
+      $("#imageCheck").val(query);
+      const url = "http://localhost:8088/api/vote/check-my-vote?image_url=" + query;
+      const response = await fetch(url);
+      const myJson = await response.json();
+      let keys = Object.keys(myJson.data);
+      let values = Object.values(myJson.data);
+      initResult(keys, values);
+    };
+    const countVote = async () => {
+      clearText();
+      const url = "http:/localhost:8088/api/vote/count-voted";
+      const response = await fetch(url);
+      const myJson = await response.json();
+      const keys = Object.keys(myJson.data);
+      const values = Object.values(myJson.data);
+      initResultForCountVote(keys, values);
+    };
+    const listVote = async () => {
+      clearText();
+      const url = "http:/localhost:8088/api/vote/list-voted";
+      const response = await fetch(url);
+      const myJson = await response.json();
+      const keys = Object.keys(myJson.data);
+      const values = Object.values(myJson.data);
+      initResultForListVote(keys, values);
+    };
+    const totalVote = async () => {
+      clearText();
+      const url = "http:/localhost:8088/api/vote/total-voted";
+      const response = await fetch(url);
+      const myJson = await response.json();
+      $("#result-p-0").text(myJson.data);
+    };
+  </script>
+</html>
