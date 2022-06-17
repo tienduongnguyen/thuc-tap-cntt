@@ -19,5 +19,5 @@ $ yarn start
 ### 4. API:
 Open Swagger UI at [here](http://localhost:8088/docs)
 ### 5. Application:
-Open User at [./frontend/user.html](./frontend/user.html)
-Open Admin at [./frontend/admin.html](./frontend/admin.html)
+- Open User at [./frontend/user.html](./frontend/user.html)
+- Open Admin at [./frontend/admin.html](./frontend/admin.html)
