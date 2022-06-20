@@ -206,7 +206,9 @@ module.exports = {
     try {
       let data = {};
       const supply = await contract.methods.supply().call();
-      for (let i = supply - 1; i >= supply - 10; i--) {
+      let stopIndex = 0;
+      if (supply >= 20) stopIndex = supply - 20;
+      for (let i = supply - 1; i >= stopIndex; i--) {
         const hashId = await contract.methods.hashIdByIndex(i).call();
         const vote = await contract.methods.voteByIndex(i).call();
         data[hashId] = {

@@ -1,52 +1,59 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"       
+    integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+
+    <link rel="icon" href="./images/icon.png">
+    <title>Cổng Thông tin điện tử Chính Phủ</title>
   </head>
   <body>
-    <div>
-      <div class="myCenter" tabindex="0">
-        <style>
-          .myCenter {
-            text-align: center;
-            margin-top: 60px;
-            margin-bottom: 35px;
-          }
-          .myTD {
-            text-align: center;
-            width: 390px;
-          }
-          .myBTN {
-            float: right;
-            margin-right: 12px;
-            margin-bottom: 10px;
-          }
-          .mySearch {
-            width: 100px;
-          }
-          .mySpan {
-            margin-bottom: 5px;
-          }
-        </style>
-        <h1>Bầu cử 2022</h1>
-      </div>
-    </div>
+    <style>
+      .my-center {
+        text-align: center;
+        margin-top: 60px;
+        margin-bottom: 10px;
+      }
+      .my-td {
+        text-align: center;
+        width: 390px;
+      }
+      .my-btn {
+        float: right;
+      }
+      .my-submit-btn {
+        width: 100px;
+        float: right;
+      }
+      .my-popup-btn {
+        width: 65px;
+      }
+      .my-span {
+        margin-bottom: 5px;
+      }
+      .bg-header {
+        text-align: center;
+        margin-bottom: 10px;
+        height: 225px;
+        padding-top: 50px;
+        background-image: url("./images/bg.png");
+        background-repeat: no-repeat;
+      }
+    </style>
+    <div class="bg-header" tabindex="0"></div>
     <div class="container">
-      <div class="myBTN">
-        <button onclick="clearText()" type="submit" class="btn btn-outline-dark btn-sm">Đặt lại</button>
-      </div>
-      <table class="table">
+      <table class="table table-borderless">
         <tr>
           <td>
             <table class="table">
-              <thead class="thead-light">
+              <thead class="text-black">
                 <tr>
-                  <th colspan="3" class="myCenter">Chính phủ</th>
+                  <th colspan="3" class="my-center"><h3 class="font-weight-bold">CHÍNH PHỦ</h3></th>
                 </tr>
               </thead>
               <tbody>
@@ -62,7 +69,7 @@
                     </div>
                   </td>
                   <td>
-                    <button onclick="checkNameAddress()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                    <button onclick="checkNameAddress()" type="submit" class="btn btn-danger btn-sm my-submit-btn">Gửi</button>
                   </td>
                 </tr>
                 <tr>
@@ -77,22 +84,22 @@
                     </div>
                   </td>
                   <td>
-                    <button onclick="checkAddressName()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                    <button onclick="checkAddressName()" type="submit" class="btn btn-danger btn-sm my-submit-btn">Gửi</button>
                   </td>
                 </tr>
                 <tr>
                   <td>Danh sách tài khoản</td>
                   <td></td>
                   <td>
-                    <button onclick="listAddress()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                    <button onclick="listAddress()" type="submit" class="btn btn-danger btn-sm my-submit-btn">Gửi</button>
                   </td>
                 </tr>
               </tbody>
             </table>
             <table class="table">
-              <thead class="thead-light">
+              <thead class="text-black">
                 <tr>
-                  <th colspan="3" class="myCenter">Bầu cử</th>
+                  <th colspan="3" class="my-center"><h3 class="font-weight-bold">BẦU CỬ</h3></th>
                 </tr>
               </thead>
               <tbody>
@@ -108,13 +115,13 @@
                     </div>
                   </td>
                   <td>
-                    <button onclick="scanQrCode()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                    <button onclick="scanQrCode()" type="submit" class="btn btn-danger btn-sm my-submit-btn">Gửi</button>
                   </td>
                 </tr>
                 <tr>
                   <td>Bầu cử</td>
                   <td>
-                    <div class="input-group input-group-sm mySpan">
+                    <div class="input-group input-group-sm my-span">
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Hình ảnh</span>
                       </div>
@@ -123,14 +130,39 @@
                     </div>
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-sm">Bỏ phiếu</span>
+                        <label class="input-group-text" for="optionVote">Bỏ phiếu</label>
                       </div>
-                      <input id="optionVote" type="text" class="form-control" aria-label="Small" 
-                            aria-describedby="inputGroup-sizing-sm" placeholder="Nguyen Van A">
+                      <select class="custom-select" id="optionVote">
+                        <option value="0">Chọn...</option>
+                        <option id="val-1" value="1">Nguyen Van A</option>
+                        <option id="val-2" value="2">Nguyen Van B</option>
+                        <option id="val-3" value="3">Nguyen Van C</option>
+                        <option id="val-4" value="4">Nguyen Van D</option>
+                        <option id="val-5" value="5">Nguyen Van E</option>
+                      </select>
                     </div>
                   </td>
                   <td>
-                    <button onclick="vote()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                    <div class="modal fade" id="popupVote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div>Yêu cầu của bạn đã được gửi đi <ion-icon name="thumbs-up-outline"></ion-icon></ion-icon></div>
+                            <div>Vui lòng đợi kết quả trong giây lát...</div> 
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-sm my-popup-btn" data-dismiss="modal" aria-label="Close">OK</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button onclick="vote()" type="submit" class="btn btn-danger btn-sm my-submit-btn" data-toggle="modal" data-target="#popupVote">Gửi</button>
                   </td>
                 </tr>
                 <tr>
@@ -145,45 +177,49 @@
                     </div>
                   </td>
                   <td>
-                    <button onclick="checkVote()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                    <button onclick="checkVote()" type="submit" class="btn btn-danger btn-sm my-submit-btn">Gửi</button>
                   </td>
                 </tr>
                 <tr>
                   <td>Thống kê phiếu bầu</td>
                   <td></td>
                   <td>
-                    <button onclick="countVote()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                    <button onclick="countVote()" type="submit" class="btn btn-danger btn-sm my-submit-btn">Gửi</button>
                   </td>
                 </tr>
                 <tr>
-                  <td>Danh sách phiếu bầu</td>
+                  <td>Lịch sử bầu cử</td>
                   <td></td>
                   <td>
-                    <button onclick="listVote()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                    <button onclick="listVote()" type="submit" class="btn btn-danger btn-sm my-submit-btn">Gửi</button>
                   </td>
                 </tr>
                 <tr>
                   <td>Tổng số phiếu bầu</td>
                   <td></td>
                   <td>
-                    <button onclick="totalVote()" type="submit" class="btn btn-dark btn-sm mySearch">Gửi</button>
+                    <button onclick="totalVote()" type="submit" class="btn btn-danger btn-sm my-submit-btn">Gửi</button>
                   </td>
                 </tr>
               </tbody>
             </table>
           </td>
           <td>
-            <table id="result-p" class="table">
-              <thead class="thead-dark">
+            <table id="result-p" class="table table-hover">
+              <thead class="text-black">
                 <tr>
                   <tr>
-                    <th class="myCenter">Kết quả</th>
+                    <th class="my-center">
+                      <h3 class="font-weight-bold">KẾT QUẢ
+                        <button onclick="clearText()" type="submit" class="btn my-btn"><ion-icon name="backspace"></ion-icon></button>
+                      </h3>
+                    </th>
                   </tr>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td id="result-p-0" class="myTD"></td>
+                  <td id="result-p-0" class="my-td"></td>
                 </tr>
               </tbody>
             </table>
@@ -201,7 +237,7 @@
       $("#result-p-0").text("");
       $("#imageScan").val("");
       $("#imageVote").val("");
-      $("#optionVote").val("");
+      $("#optionVote").val(0);
       $("#imageCheck").val("");
       for (let i=1; i<rows; i++) {
         $(`#result-p-r-${i}`).remove();
@@ -214,7 +250,7 @@
       for (let i=1; i<rows; i++) {
         if (keys[i] == "Vote for") values[i] = idToName(values[i]);
         $('#result-p tr:last').after(`
-          <tr id="result-p-r-${i}"><td class="myTD">${keys[i]}: ${values[i]}</td></tr>
+          <tr id="result-p-r-${i}"><td class="my-td">${keys[i]}: ${values[i]}</td></tr>
         `);
       }
     };
@@ -224,7 +260,7 @@
       for (let i=1; i<rows; i++) {
         keys[i] = idToName(parseInt(keys[i]));
         $('#result-p tr:last').after(`
-          <tr id="result-p-r-${i}"><td class="myTD">${keys[i]}: ${values[i]}</td></tr>
+          <tr id="result-p-r-${i}"><td class="my-td">${keys[i]}: ${values[i]}</td></tr>
         `);
       }
     };
@@ -235,23 +271,12 @@
         let voteFor = idToName(parseInt(values[i]["Vote for"]));
         let voteAt = values[i]["Vote at"];
         $('#result-p tr:last').after(`
-          <tr id="result-p-r-${i}"><td class="myTD">${keys[i]} ${voteFor} - ${voteAt}</td></tr>
+          <tr id="result-p-r-${i}"><td class="my-td">${keys[i]} ${voteFor} - ${voteAt}</td></tr>
         `);
       }
     };
     const idToName = (id) => {
-      if (id == 1) return "Nguyen Van A";
-      if (id == 2) return "Nguyen Van B";
-      if (id == 3) return "Nguyen Van C";
-      if (id == 4) return "Nguyen Van D";
-      if (id == 5) return "Nguyen Van E";
-    };
-    const nameToId = (name) => {
-      if (name == "Nguyen Van A") return 1;
-      if (name == "Nguyen Van B") return 2;
-      if (name == "Nguyen Van C") return 3;
-      if (name == "Nguyen Van D") return 4;
-      if (name == "Nguyen Van E") return 5;
+      return $(`#val-${id}`).text();
     };
     const checkNameAddress = async () => {
       const query = $("#addressName").val();
@@ -289,9 +314,12 @@
       const url = "http:/localhost:8088/api/vote/scan?image_url=" + query;
       const response = await fetch(url);
       const myJson = await response.json();
-      const keys = Object.keys(myJson.data);
-      const values = Object.values(myJson.data);
-      initResult(keys, values);
+      if (myJson.code == 200) {
+        const keys = Object.keys(myJson.data);
+        const values = Object.values(myJson.data);
+        initResult(keys, values);
+      }
+      else alert("Hình ảnh không hợp lệ");
     };
     const vote = async () => {
       const query1 = $("#imageVote").val();
@@ -299,17 +327,18 @@
       clearText();
       $("#imageVote").val(query1);
       $("#optionVote").val(query2);
-      query2 = nameToId(query2);
-      console.log(query2);
       $.post("http:/localhost:8088/api/vote/voting",
       {
         image_url: query1,
         option: parseInt(query2),
       }, function (res, status) {
-        const keys = Object.keys(res.data);
-        const values = Object.values(res.data);
-        alert("Bạn đã bầu cử thành công")
-        initResult(keys, values);
+        if (res.code == 200) {
+          const keys = Object.keys(res.data);
+          const values = Object.values(res.data);
+          alert("Bạn đã bầu cử thành công")
+          initResult(keys, values);
+        }
+        else alert("Có gì đó sai sai");
       });
     };
     const checkVote = async () => {
@@ -319,9 +348,12 @@
       const url = "http://localhost:8088/api/vote/check-my-vote?image_url=" + query;
       const response = await fetch(url);
       const myJson = await response.json();
-      let keys = Object.keys(myJson.data);
-      let values = Object.values(myJson.data);
-      initResult(keys, values);
+      if (myJson.code == 200) {
+        const keys = Object.keys(myJson.data);
+        const values = Object.values(myJson.data);
+        initResult(keys, values);
+      }
+      else alert("Hình ảnh không hợp lệ");
     };
     const countVote = async () => {
       clearText();
