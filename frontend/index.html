@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css"
+      rel="stylesheet"
+    />
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  </head>
+  <body>
+    <style>
+      .background-radial-gradient {
+        background-color: hsl(200, 46%, 46%);
+        background-image: radial-gradient(
+            650px circle at 0% 0%,
+            hsl(200, 49%, 40%) 15%,
+            hsl(200, 48%, 61%) 35%,
+            hsl(200, 78%, 58%) 75%,
+            hsl(200, 65%, 62%) 80%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1250px circle at 100% 100%,
+            hsl(200, 41%, 45%) 15%,
+            hsl(200, 41%, 30%) 35%,
+            hsl(200, 41%, 20%) 75%,
+            hsl(200, 41%, 19%) 80%,
+            transparent 100%
+          );
+        height: 110vh;
+      }
+
+      .bg-glass {
+        background-color: hsla(0, 0%, 90%, 0.6) !important;
+        backdrop-filter: saturate(200%) blur(25px);
+        margin-top: 50px;
+        border-radius: 0.25rem;
+      }
+
+      .center-btn {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
+
+      .float-right-btn {
+        float: right;
+        margin: 5px;
+      }
+
+      .banner {
+        border-radius: 0.25rem;
+        height: 153.5px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+      }
+
+      .table-border-radius {
+        border-collapse: collapse;
+        border-radius: 0.25em;
+        overflow: hidden;
+      }
+
+      .center-text {
+        text-align: center;
+        vertical-align: text-top;
+      }
+
+      .padding-table {
+        padding-bottom: 1px;
+      }
+
+      .padding-head {
+        padding: 10px;
+      }
+
+      .input-width-1 {
+        width: 310px;
+      }
+
+      .input-width-2 {
+        width: 355px;
+      }
+
+      .no-hover:hover{
+        background-color: white;
+      }
+      .no-hover:focus{
+        background-color: white;
+      }
+
+      .my-selector {
+        border-radius: .25rem;
+        border-color: rgb(197, 197, 197);
+        font: Arial;
+        height: 35.5px;
+        width: 264px;
+      }
+    </style>
+    <div id="main" class="background-radial-gradient overflow-hidden">
+      <button
+        onclick="connectMetamask()"
+        id="metamaskButton"
+        class="btn btn-danger float-right-btn"
+      >
+        Kết nối ví metamask
+      </button>
+      <button
+        id="metamaskAddress"
+        class="btn btn-success float-right-btn"
+        hidden
+      ></button>
+      <div class="container bg-glass">
+        <img src="./images/bg.png" class="banner" />
+        <div class="padding-table">
+          <table class="table table-border-radius align-middle bg-white">
+            <tr>
+              <td style="width: 706px">
+                <table>
+                  <thead class="bg-white center-text text-uppercase fs-3">
+                    <tr>
+                      <th class="padding-head" colspan="4">chính phủ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="fs-6 pe-2 pb-2 text-black">Kiểm tra tên của tài khoản</td>
+                      <td class="pe-2 pb-2">
+                        <div class="input-group input-width-1">
+                          <input
+                            id="addressName"
+                            class="form-control"
+                            placeholder="0xCeA2a20F681169BEe6Cfb04F446b61c5B45cf8E4"
+                          />
+                        </div>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <button
+                          onclick="checkNameAddress()"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          Gửi
+                        </button>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <span id="status-1" class="badge badge-success d-inline">Sẵn sàng</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fs-6 pe-2 pb-2 text-black">Kiểm tra tài khoản của tên</td>
+                      <td class="pe-2 pb-2">
+                        <div class="input-group">
+                          <input
+                            id="nameAddress"
+                            class="form-control"
+                            placeholder="Ha Noi"
+                          />
+                        </div>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <button
+                          onclick="checkAddressName()"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          Gửi
+                        </button>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <span id="status-2" class="badge badge-success d-inline">Sẵn sàng</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fs-6 pe-2 pb-2 text-black">Danh sách tài khoản</td>
+                      <td class="pe-2 pb-2"></td>
+                      <td class="pe-2 pb-2">
+                        <button
+                          onclick="listAddress()"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          Gửi
+                        </button>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <span id="status-3" class="badge badge-success d-inline">Sẵn sàng</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table>
+                  <thead class="bg-white center-text text-uppercase fs-3">
+                    <tr>
+                      <th class="padding-head" colspan="4">Bầu cử</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="fs-6 pe-2 pb-2 text-black">Quét mã QR</td>
+                      <td class="pe-2 pb-2">
+                        <div class="input-group input-width-2">
+                          <input
+                            id="imageScan"
+                            class="form-control"
+                            placeholder="https://gateway.pinata.cloud/ipfs/QmUqZdf9gsusvN3G4bRR6z2iY7urJ1RUvaaKt3wKuoUAoS"
+                          />
+                        </div>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <button
+                          onclick="scanQrCode()"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          Gửi
+                        </button>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <span id="status-4" class="badge badge-success d-inline">Sẵn sàng</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fs-6 pe-2 pb-2 text-black">Bầu cử</td>
+                      <td class="pe-2 pb-2">
+                        <div class="input-group">
+                          <input
+                            id="imageVote"
+                            class="form-control"
+                            placeholder="https://gateway.pinata.cloud/ipfs/QmUqZdf9gsusvN3G4bRR6z2iY7urJ1RUvaaKt3wKuoUAoS"
+                          />
+                        </div>
+                        <div class="input-group pt-1">
+                          <div class="input-group-prepend pe-1 fs-5">
+                            <label class="input-group-text text-black" for="optionVote">Bỏ phiếu</label>
+                          </div>
+                          <select class="my-selector fs-6" id="optionVote">
+                            <option value="0">Chọn...</option>
+                            <option id="val-1" value="1">Nguyen Van A</option>
+                            <option id="val-2" value="2">Nguyen Van B</option>
+                            <option id="val-3" value="3">Nguyen Van C</option>
+                            <option id="val-4" value="4">Nguyen Van D</option>
+                            <option id="val-5" value="5">Nguyen Van E</option>
+                          </select>
+                        </div>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <button
+                          onclick="vote()"
+                          type="submit"
+                          class="btn btn-primary"
+                          style="height: 74px"
+                        >
+                          Gửi
+                        </button>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <span id="status-5" class="badge badge-success d-inline">Sẵn sàng</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fs-6 pe-2 pb-2 text-black">Kiểm tra phiếu bầu</td>
+                      <td class="pe-2 pb-2">
+                        <div class="input-group">
+                          <input
+                            id="imageCheck"
+                            class="form-control"
+                            placeholder="https://gateway.pinata.cloud/ipfs/QmUqZdf9gsusvN3G4bRR6z2iY7urJ1RUvaaKt3wKuoUAoS"
+                          />
+                        </div>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <button
+                          onclick="checkVote()"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          Gửi
+                        </button>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <span id="status-6" class="badge badge-success d-inline">Sẵn sàng</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fs-6 pe-2 pb-2 text-black">Thống kê phiếu bầu</td>
+                      <td class="pe-2 pb-2"></td>
+                      <td class="pe-2 pb-2">
+                        <button
+                          onclick="countVote()"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          Gửi
+                        </button>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <span id="status-7" class="badge badge-success d-inline">Sẵn sàng</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fs-6 pe-2 pb-2 text-black">Lịch sử bầu cử</td>
+                      <td class="pe-2 pb-2"></td>
+                      <td class="pe-2 pb-2">
+                        <button
+                          onclick="listVote()"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          Gửi
+                        </button>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <span id="status-8" class="badge badge-success d-inline">Sẵn sàng</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fs-6 pe-2 pb-2 text-black">Tổng số phiếu bầu</td>
+                      <td class="pe-2 pb-2"></td>
+                      <td class="pe-2 pb-2">
+                        <button
+                          onclick="totalVote()"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          Gửi
+                        </button>
+                      </td>
+                      <td class="pe-2 pb-2">
+                        <span id="status-9" class="badge badge-success d-inline">Sẵn sàng</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td>
+                <table id="result" style="height: 570px; width: 545px">
+                  <thead class="bg-white center-text text-uppercase fs-3">
+                    <tr>
+                      <th class="padding-head" colspan="4">
+                        <button onclick="clearText()" class="btn btn-link no-hover" style="float: right">
+                          <ion-icon name="backspace"></ion-icon>
+                        </button>
+                        Kết quả
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="font-monospace fs-6">
+                    <tr>
+                      <td id="result-0" class="p-2 center-text"></td>
+                    </tr>
+                  </tbody>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    let userAddress = null;
+    let rows = 1;
+    const clearText = () => {
+      $("#addressName").val("");
+      $("#nameAddress").val("");
+      $("#result-0").text("");
+      $("#imageScan").val("");
+      $("#imageVote").val("");
+      $("#optionVote").val(0);
+      $("#imageCheck").val("");
+      for (let i=1; i<rows; i++) {
+        $(`#result-r-${i}`).remove();
+      }
+      rows = 1;
+    };
+    const initResult = (keys, values) => {
+      $("#result-0").text(`${keys[0]}: ${values[0]}`);
+      rows = keys.length;
+      for (let i=1; i<rows; i++) {
+        if (keys[i] == "Vote for") values[i] = idToName(values[i]);
+        $('#result tr:last').after(`
+          <tr id="result-r-${i}"><td class="p-2 center-text">${keys[i]}: ${values[i]}</td></tr>
+        `);
+      }
+    };
+    const initResultForCountVote = (keys, values) => {
+      $("#result-0").text(`${idToName(parseInt(keys[0]))}: ${values[0]}`);
+      rows = keys.length;
+      for (let i=1; i<rows; i++) {
+        keys[i] = idToName(parseInt(keys[i]));
+        $('#result tr:last').after(`
+          <tr id="result-r-${i}"><td class="p-2 center-text">${keys[i]}: ${values[i]}</td></tr>
+        `);
+      }
+    };
+    const initResultForListVote = (keys, values) => {
+      $("#result-0").text(`${keys[0]} ${idToName(parseInt(values[0]["Vote for"]))} - ${values[0]["Vote at"]}`);
+      rows = keys.length;
+      for (let i=1; i<rows; i++) {
+        let voteFor = idToName(parseInt(values[i]["Vote for"]));
+        let voteAt = values[i]["Vote at"];
+        $('#result tr:last').after(`
+          <tr id="result-r-${i}"><td class="p-2 center-text">${keys[i]} ${voteFor} - ${voteAt}</td></tr>
+        `);
+      }
+    };
+    const idToName = (id) => {
+      return $(`#val-${id}`).text();
+    };
+    const statusStart = (id) => {
+      $(`#status-${id}`).addClass("badge-warning").removeClass("badge-success");
+      $(`#status-${id}`).text("Đang gửi");
+    };
+    const statusEnd = (id) => {
+      $(`#status-${id}`).addClass("badge-success").removeClass("badge-warning");
+      $(`#status-${id}`).text("Sẵn sàng");
+    };
+    const connectMetamask = async () => {
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      userAddress = accounts[0];
+      $("#metamaskAddress").text(userAddress);
+      $("#metamaskAddress").removeAttr("hidden");
+      $("#metamaskButton").hide();
+    };
+    const checkNameAddress = async () => {
+      const id = 1;
+      statusStart(id);
+      const query = $("#addressName").val();
+      clearText();
+      $("#addressName").val(query);
+      const url = "http://localhost:8088/api/gov/name?address=" + query;
+      const response = await fetch(url);
+      const myJson = await response.json();
+      if (myJson.code == 200) $("#result-0").text(myJson.data);
+      else alert("Địa chỉ không hợp lệ");
+      statusEnd(id);
+    };
+    const checkAddressName = async () => {
+      const id = 2;
+      statusStart(id);
+      const query = $("#nameAddress").val();
+      clearText();
+      $("#nameAddress").val(query);
+      const url = "http://localhost:8088/api/gov/address?name=" + query;
+      const response = await fetch(url);
+      const myJson = await response.json();
+      if (myJson.code == 200) $("#result-0").text(myJson.data);
+      else alert("Tên không tồn tại");
+      statusEnd(id);
+    };
+    const listAddress = async () => {
+      const id = 3;
+      statusStart(id);
+      clearText();
+      const url = "http://localhost:8088/api/gov/list";
+      const response = await fetch(url);
+      const myJson = await response.json();
+      const keys = Object.keys(myJson.data);
+      const values = Object.values(myJson.data);
+      initResult(keys, values);
+      statusEnd(id);
+    };
+    const scanQrCode = async () => {
+      const id = 4;
+      statusStart(id);
+      const query = $("#imageScan").val();
+      clearText();
+      $("#imageScan").val(query);
+      const url = "http://localhost:8088/api/vote/scan?image_url=" + query;
+      const response = await fetch(url);
+      const myJson = await response.json();
+      if (myJson.code == 200) {
+        const keys = Object.keys(myJson.data);
+        const values = Object.values(myJson.data);
+        initResult(keys, values);
+      }
+      else alert("Hình ảnh không hợp lệ");
+      statusEnd(id);
+    };
+    const vote = async () => {
+      const id = 5;
+      statusStart(id);
+      const query1 = $("#imageVote").val();
+      let query2 = $("#optionVote").val();
+      clearText();
+      $("#imageVote").val(query1);
+      $("#optionVote").val(query2);
+      $.post("http://localhost:8088/api/vote/voting",
+      {
+        image_url: query1,
+        option: parseInt(query2),
+      }, function (res, status) {
+        if (res.code == 200) {
+          const keys = Object.keys(res.data);
+          const values = Object.values(res.data);
+          alert("Bạn đã bầu cử thành công")
+          initResult(keys, values);
+        }
+        else alert(res.message);
+        statusEnd(id);
+      });
+    };
+    const checkVote = async () => {
+      const id = 6;
+      statusStart(id);
+      const query = $("#imageCheck").val();
+      clearText();
+      $("#imageCheck").val(query);
+      const url = "http://localhost:8088/api/vote/check-my-vote?image_url=" + query;
+      const response = await fetch(url);
+      const myJson = await response.json();
+      if (myJson.code == 200) {
+        const keys = Object.keys(myJson.data);
+        const values = Object.values(myJson.data);
+        initResult(keys, values);
+      }
+      else alert("Hình ảnh không hợp lệ");
+      statusEnd(id);
+    };
+    const countVote = async () => {
+      const id = 7;
+      statusStart(id);
+      clearText();
+      const url = "http://localhost:8088/api/vote/count-voted";
+      const response = await fetch(url);
+      const myJson = await response.json();
+      const keys = Object.keys(myJson.data);
+      const values = Object.values(myJson.data);
+      initResultForCountVote(keys, values);
+      statusEnd(id);
+    };
+    const listVote = async () => {
+      const id = 8;
+      statusStart(id);
+      clearText();
+      const url = "http://localhost:8088/api/vote/list-voted";
+      const response = await fetch(url);
+      const myJson = await response.json();
+      const keys = Object.keys(myJson.data);
+      const values = Object.values(myJson.data);
+      initResultForListVote(keys, values);
+      statusEnd(id);
+    };
+    const totalVote = async () => {
+      const id = 9;
+      statusStart(id);
+      clearText();
+      const url = "http://localhost:8088/api/vote/total-voted";
+      const response = await fetch(url);
+      const myJson = await response.json();
+      $("#result-0").text(myJson.data);
+      statusEnd(id);
+    };
+  </script>
+</html>
