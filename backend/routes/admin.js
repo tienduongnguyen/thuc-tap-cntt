@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
+  GenerateAccount,
   AddAuthorizedAccount,
   ChangeAuthorizedAccount,
   DeleteAuthorizedAccount,
@@ -13,6 +14,12 @@ const {
  * @swagger
  * components:
  *  schemas:
+ *      Generate:
+ *          type: object
+ *          required:
+ *          properties:
+ *          example:
+ *              null
  *      Add:
  *          type: object
  *          required:
@@ -87,6 +94,23 @@ const {
  *  name: Government
  *  description: Admin
  */
+
+/**
+ * @swagger
+ * /api/gov/create:
+ *  get:
+ *      summary: Create account
+ *      tags: [Government]
+ *      responses:
+ *          200:
+ *              description: success
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          items:
+ *                              $ref: '#/components/schemas/Generate'
+ */
+router.get("/create", GenerateAccount);
 
 /**
  * @swagger

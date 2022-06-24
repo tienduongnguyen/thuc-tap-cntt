@@ -13,8 +13,16 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css"
       rel="stylesheet"
     />
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <link rel="icon" href="./images/icon.png">
+    <title>Cổng Thông tin điện tử Chính Phủ</title>
   </head>
   <body>
     <style>
@@ -36,7 +44,7 @@
             hsl(200, 41%, 19%) 80%,
             transparent 100%
           );
-        height: 110vh;
+        height: 145vh;
       }
 
       .bg-glass {
@@ -109,6 +117,32 @@
         width: 264px;
       }
     </style>
+    <div class="my-modals">
+      <div class="modal fade" id="voteModal" tabindex="-1" aria-labelledby="voteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="voteModalLabel">Hãy cho chúng tôi biết bạn là ai?</h5>
+              <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="ps-1">URL:</div>
+              <div class="input-group">
+                <input
+                  id="imageVote"
+                  class="form-control"
+                  placeholder="https://gateway.pinata.cloud/ipfs/QmUqZdf9gsusvN3G4bRR6z2iY7urJ1RUvaaKt3wKuoUAoS"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-danger" data-mdb-dismiss="modal">Quay lại</button>
+              <button onclick="vote()" class="btn btn-primary" data-mdb-dismiss="modal">Bầu cử</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="main" class="background-radial-gradient overflow-hidden">
       <button
         onclick="connectMetamask()"
@@ -118,6 +152,7 @@
         Kết nối ví metamask
       </button>
       <button
+        onclick="connectMetamask()"
         id="metamaskAddress"
         class="btn btn-success float-right-btn"
         hidden
@@ -125,7 +160,7 @@
       <div class="container bg-glass">
         <img src="./images/bg.png" class="banner" />
         <div class="padding-table">
-          <table class="table table-border-radius align-middle bg-white">
+          <table class="table table-border-radius bg-white">
             <tr>
               <td style="width: 706px">
                 <table>
@@ -187,6 +222,7 @@
                       <td class="fs-6 pe-2 pb-2 text-black">Danh sách tài khoản</td>
                       <td class="pe-2 pb-2"></td>
                       <td class="pe-2 pb-2">
+                      
                         <button
                           onclick="listAddress()"
                           type="submit"
@@ -214,7 +250,7 @@
                         <div class="input-group input-width-2">
                           <input
                             id="imageScan"
-                            class="form-control"
+                            class="form-control" 
                             placeholder="https://gateway.pinata.cloud/ipfs/QmUqZdf9gsusvN3G4bRR6z2iY7urJ1RUvaaKt3wKuoUAoS"
                           />
                         </div>
@@ -233,18 +269,11 @@
                       </td>
                     </tr>
                     <tr>
-                      <td class="fs-6 pe-2 pb-2 text-black">Bầu cử</td>
+                      <td class="fs-6 pe-2 pb-2 text-black">Bỏ phiếu</td>
                       <td class="pe-2 pb-2">
                         <div class="input-group">
-                          <input
-                            id="imageVote"
-                            class="form-control"
-                            placeholder="https://gateway.pinata.cloud/ipfs/QmUqZdf9gsusvN3G4bRR6z2iY7urJ1RUvaaKt3wKuoUAoS"
-                          />
-                        </div>
-                        <div class="input-group pt-1">
                           <div class="input-group-prepend pe-1 fs-5">
-                            <label class="input-group-text text-black" for="optionVote">Bỏ phiếu</label>
+                            <label class="input-group-text text-black" for="optionVote">Ứng viên</label>
                           </div>
                           <select class="my-selector fs-6" id="optionVote">
                             <option value="0">Chọn...</option>
@@ -258,10 +287,10 @@
                       </td>
                       <td class="pe-2 pb-2">
                         <button
-                          onclick="vote()"
                           type="submit"
                           class="btn btn-primary"
-                          style="height: 74px"
+                          data-mdb-toggle="modal" 
+                          data-mdb-target="#voteModal"
                         >
                           Gửi
                         </button>
@@ -346,7 +375,7 @@
                 </table>
               </td>
               <td>
-                <table id="result" style="height: 570px; width: 545px">
+                <table id="result" style="width: 545px">
                   <thead class="bg-white center-text text-uppercase fs-3">
                     <tr>
                       <th class="padding-head" colspan="4">
@@ -358,7 +387,7 @@
                     </tr>
                   </thead>
                   <tbody class="font-monospace fs-6">
-                    <tr>
+                    <tr class="align-top">
                       <td id="result-0" class="p-2 center-text"></td>
                     </tr>
                   </tbody>
@@ -370,10 +399,13 @@
     </div>
   </body>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script>
     let userAddress = null;
     let rows = 1;
+    window.ethereum.on('accountsChanged', (accounts) => {
+      userAddress = accounts[0];
+      $("#metamaskAddress").text(userAddress);
+    })
     const clearText = () => {
       $("#addressName").val("");
       $("#nameAddress").val("");
@@ -387,11 +419,58 @@
       }
       rows = 1;
     };
+    const initErrorModal = (id, str) => {
+      $(".my-modals").append(`
+        <div class="modal fade" id="modal-${id}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modal-${id}-label">Có gì đó sai sai</h5>
+                <button onclick="eraseModal(${id})" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                ${str}
+              </div>
+              <div class="modal-footer">
+                <button onclick="eraseModal(${id})" class="btn btn-danger" data-mdb-dismiss="modal">Đóng</button>
+              </div>
+            </div>
+          </div>
+        </div> 
+      `)
+      $(`#modal-${id}`).modal("show");
+    };
+    const initSuccessModal = (id, str) => {
+      $(".my-modals").append(`
+        <div class="modal fade" id="modal-${id}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modal-${id}-label">Thông báo</h5>
+                <button onclick="eraseModal(${id})" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                ${str}
+              </div>
+              <div class="modal-footer">
+                <button onclick="eraseModal(${id})" class="btn btn-danger" data-mdb-dismiss="modal">Đóng</button>
+              </div>
+            </div>
+          </div>
+        </div> 
+      `)
+      $(`#modal-${id}`).modal("show");
+    };  
+    const eraseModal = (id) => {
+      $(`#modal-${id}`).remove();
+    };
     const initResult = (keys, values) => {
       $("#result-0").text(`${keys[0]}: ${values[0]}`);
       rows = keys.length;
       for (let i=1; i<rows; i++) {
-        if (keys[i] == "Vote for") values[i] = idToName(values[i]);
+        if (keys[i] == "Vote for" && values[i] != null) {
+          values[i] = idToName(values[i]);
+        }
         $('#result tr:last').after(`
           <tr id="result-r-${i}"><td class="p-2 center-text">${keys[i]}: ${values[i]}</td></tr>
         `);
@@ -436,7 +515,7 @@
       userAddress = accounts[0];
       $("#metamaskAddress").text(userAddress);
       $("#metamaskAddress").removeAttr("hidden");
-      $("#metamaskButton").hide();
+      $("#metamaskButton").attr("hidden", "");
     };
     const checkNameAddress = async () => {
       const id = 1;
@@ -448,7 +527,7 @@
       const response = await fetch(url);
       const myJson = await response.json();
       if (myJson.code == 200) $("#result-0").text(myJson.data);
-      else alert("Địa chỉ không hợp lệ");
+      else initErrorModal(id, "Địa chỉ không hợp lệ");
       statusEnd(id);
     };
     const checkAddressName = async () => {
@@ -461,7 +540,7 @@
       const response = await fetch(url);
       const myJson = await response.json();
       if (myJson.code == 200) $("#result-0").text(myJson.data);
-      else alert("Tên không tồn tại");
+      else initErrorModal(id, "Tên không tồn tại");
       statusEnd(id);
     };
     const listAddress = async () => {
@@ -479,9 +558,10 @@
     const scanQrCode = async () => {
       const id = 4;
       statusStart(id);
-      const query = $("#imageScan").val();
+      let query = $("#imageScan").val();
       clearText();
       $("#imageScan").val(query);
+      query = encodeURIComponent(query);
       const url = "http://localhost:8088/api/vote/scan?image_url=" + query;
       const response = await fetch(url);
       const myJson = await response.json();
@@ -490,47 +570,58 @@
         const values = Object.values(myJson.data);
         initResult(keys, values);
       }
-      else alert("Hình ảnh không hợp lệ");
+      else initErrorModal(id, "Hình ảnh không hợp lệ");
       statusEnd(id);
     };
     const vote = async () => {
       const id = 5;
-      statusStart(id);
-      const query1 = $("#imageVote").val();
-      let query2 = $("#optionVote").val();
-      clearText();
-      $("#imageVote").val(query1);
-      $("#optionVote").val(query2);
-      $.post("http://localhost:8088/api/vote/voting",
-      {
-        image_url: query1,
-        option: parseInt(query2),
-      }, function (res, status) {
-        if (res.code == 200) {
-          const keys = Object.keys(res.data);
-          const values = Object.values(res.data);
-          alert("Bạn đã bầu cử thành công")
-          initResult(keys, values);
-        }
-        else alert(res.message);
-        statusEnd(id);
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
       });
+      if (userAddress == accounts[0]) {
+        console.log(userAddress);
+        statusStart(id);
+        let query1 = $("#imageVote").val();
+        let query2 = $("#optionVote").val();
+        clearText();
+        $("#imageVote").val(query1);
+        $("#optionVote").val(query2);
+        $.post("http://localhost:8088/api/vote/voting",
+        {
+          image_url: query1,
+          option: parseInt(query2),
+          from: userAddress.toString(),
+        }, function (res, status) {
+          if (res.code == 200) {
+            const keys = Object.keys(res.data);
+            const values = Object.values(res.data);
+            initSuccessModal(id, "Bạn đã bầu cử thành công")
+            initResult(keys, values);
+          }
+          else initErrorModal(id, res.message);
+          $("#imageVote").val("");
+          statusEnd(id);
+        });
+      }
+      else initErrorModal(id, "Vui lòng kết nối ví Metamask để tiếp tục");
     };
     const checkVote = async () => {
       const id = 6;
       statusStart(id);
-      const query = $("#imageCheck").val();
+      let query = $("#imageCheck").val();
       clearText();
       $("#imageCheck").val(query);
+      query = encodeURIComponent(query);
       const url = "http://localhost:8088/api/vote/check-my-vote?image_url=" + query;
       const response = await fetch(url);
       const myJson = await response.json();
+      console.log(myJson.data);
       if (myJson.code == 200) {
         const keys = Object.keys(myJson.data);
         const values = Object.values(myJson.data);
         initResult(keys, values);
       }
-      else alert("Hình ảnh không hợp lệ");
+      else initErrorModal(id, "Hình ảnh không hợp lệ");
       statusEnd(id);
     };
     const countVote = async () => {

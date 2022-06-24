@@ -9,9 +9,10 @@ const PORT = 8088;
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("swagger-jsdoc");
 
-// app.use(cors());
+app.use(cors());
+
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, OPTIONS, PUT, PATCH, DELETE"

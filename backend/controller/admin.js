@@ -7,10 +7,35 @@ const {
   MY_ADDRESS,
   GOV_ABI,
   GOV_CONTRACT_ADDRESS,
+  ALL_ACCOUNTS,
+  AUTH_ACCOUNTS,
 } = require("../utils/constants");
 
 const web3 = new Web3(RINKEBY_URL);
 const contract = new web3.eth.Contract(GOV_ABI, GOV_CONTRACT_ADDRESS);
+
+const addAccountToList = (path, address, privateKey) => {
+  removeAccountFromList(path, address);
+  const fs = require("fs");
+  let json = require(path);
+  let accounts = json.accounts;
+  accounts.push({
+    address: address,
+    privateKey: privateKey,
+  });
+  json.accounts = accounts;
+  fs.writeFileSync(path, JSON.stringify(json));
+};
+
+const removeAccountFromList = (path, address) => {
+  const fs = require("fs");
+  let json = require(path);
+  let accounts = json.accounts;
+  json.accounts = accounts.filter((account) => {
+    return account.address !== address;
+  });
+  fs.writeFileSync(path, JSON.stringify(json));
+};
 
 const signAndSendTransaction = async (data) => {
   try {
@@ -36,6 +61,21 @@ const signAndSendTransaction = async (data) => {
 };
 
 module.exports = {
+  GenerateAccount: async (req, res) => {
+    try {
+      const { address, privateKey } = web3.eth.accounts.create();
+      addAccountToList(ALL_ACCOUNTS, address, privateKey);
+      res.json(
+        onSuccess({
+          address: address,
+          privateKey: privateKey,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      res.json(onError(error));
+    }
+  },
   NameOfAddress: async (req, res) => {
     try {
       const address = req.query.address;
@@ -83,6 +123,10 @@ module.exports = {
       if (status) res.json(onError("Address have already added"));
       else {
         const result = await add(address, name);
+        const privateKey = require(ALL_ACCOUNTS).accounts.filter(
+          (account) => account.address == address
+        )[0].privateKey;
+        addAccountToList(AUTH_ACCOUNTS, address, privateKey);
         res.json(onSuccess(result));
       }
     } catch (error) {
@@ -136,6 +180,7 @@ module.exports = {
         if (!status) res.json(onError("Address haven't added yet"));
         else {
           const result = await deletes(address);
+          removeAccountFromList(AUTH_ACCOUNTS, address);
           res.json(onSuccess(result));
         }
       }
@@ -151,7 +196,8 @@ module.exports = {
       for (let i = 0; i < supply; i++) {
         const address = await contract.methods.addressIndex(i).call();
         if (address == "0x0000000000000000000000000000000000000000") continue;
-        const name = await contract.methods._addressToName(address).call();
+        let name = await contract.methods._addressToName(address).call();
+        if (name == "admin") name = "Chinh Phu";
         result[name] = address;
       }
       res.json(onSuccess(result));

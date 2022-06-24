@@ -7,11 +7,10 @@ const https = require("https");
 const Web3 = require("web3");
 const {
   RINKEBY_URL,
-  PRIVATE_KEY,
-  MY_ADDRESS,
   VOTE_CONTRACT_ADDRESS,
   VOTE_ABI,
   IMG_PATH,
+  AUTH_ACCOUNTS,
 } = require("../utils/constants");
 const keccak256 = require("keccak256");
 const web3 = new Web3(RINKEBY_URL);
@@ -102,10 +101,10 @@ module.exports = {
   },
   Voting: async (req, res) => {
     try {
-      const signAndSendTransaction = async (data) => {
+      const signAndSendTransaction = async (fromAddress, privateKey, data) => {
         try {
           const txObj = {
-            from: MY_ADDRESS,
+            from: fromAddress,
             to: VOTE_CONTRACT_ADDRESS,
             value: "0x00",
             data: data,
@@ -115,12 +114,11 @@ module.exports = {
 
           const signedTx = await web3.eth.accounts.signTransaction(
             txObj,
-            PRIVATE_KEY
+            privateKey
           );
           const tx = await web3.eth.sendSignedTransaction(
             signedTx.rawTransaction
           );
-          // const tokenId = web3.utils.hexToNumberString(tx.logs[0].topics[3]);
 
           return tx.transactionHash;
         } catch (error) {
@@ -128,31 +126,50 @@ module.exports = {
         }
       };
 
-      const vote = async (hashId, option, time) => {
+      const vote = async (hashId, option, time, fromAddress, privateKey) => {
         try {
           const data = contract.methods.vote(hashId, option, time).encodeABI();
-          const tx = await signAndSendTransaction(data);
+          const tx = await signAndSendTransaction(
+            fromAddress,
+            privateKey,
+            data
+          );
           return tx;
         } catch (error) {
           console.log(error);
         }
       };
 
-      const { image_url, option } = req.body;
-      const data = await scan(image_url);
-      const hashId = "0x" + keccak256(data[0]).toString("hex");
-      console.log(hashId);
-      const status = await contract.methods.exist(hashId).call();
-      if (status) {
-        res.json(onError("You have already voted"));
-      } else {
-        const txhash = await vote(hashId, option, new Date().getTime());
-        res.json(
-          onSuccess({
-            "Transaction hash": txhash.toString(),
-            "Your hash-id": hashId,
-          })
-        );
+      const { image_url, option, from } = req.body;
+      const auth = await contract.methods.isAllowed(from).call();
+      if (!auth) res.json(onError("You're not allowed"));
+      else {
+        const data = await scan(image_url);
+        const hashId = "0x" + keccak256(data[0]).toString("hex");
+        console.log(hashId);
+        const status = await contract.methods.exist(hashId).call();
+        if (status) {
+          res.json(onError("You have already voted"));
+        } else {
+          const accounts = require(AUTH_ACCOUNTS).accounts;
+          const account = accounts.filter(
+            (x) => x.address.toLowerCase() == from.toLowerCase()
+          )[0];
+          const privateKey = account.privateKey;
+          const txhash = await vote(
+            hashId,
+            option,
+            new Date().getTime(),
+            from,
+            privateKey
+          );
+          res.json(
+            onSuccess({
+              "Transaction hash": txhash.toString(),
+              "Your hash-id": hashId,
+            })
+          );
+        }
       }
     } catch (error) {
       res.json(onError(error));
@@ -166,9 +183,6 @@ module.exports = {
       const hashId = "0x" + keccak256(data[0]).toString("hex");
       const status = await contract.methods.exist(hashId).call();
       let info = {
-        Id: data[0],
-        Name: data[2],
-        "Date of Birth": normalizeDate(data[3]),
         "Hash-id": hashId,
         "Is Voted": false,
         "Vote for": null,
@@ -206,8 +220,9 @@ module.exports = {
     try {
       let data = {};
       const supply = await contract.methods.supply().call();
+      let displayAmount = 15;
       let stopIndex = 0;
-      if (supply >= 10) stopIndex = supply - 10;
+      if (supply >= displayAmount) stopIndex = supply - displayAmount;
       for (let i = supply - 1; i >= stopIndex; i--) {
         const hashId = await contract.methods.hashIdByIndex(i).call();
         const vote = await contract.methods.voteByIndex(i).call();

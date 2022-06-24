@@ -28,6 +28,7 @@ const {
  *          required:
  *              - image_url
  *              - option
+ *              - from
  *          properties:
  *              image_url:
  *                  type: string
@@ -35,9 +36,13 @@ const {
  *              option:
  *                  type: int
  *                  description: Number vote for
+ *              from:
+ *                  type: string
+ *                  description: from address of account
  *          example:
  *              image_url: "https://gateway.pinata.cloud/ipfs/QmUqZdf9gsusvN3G4bRR6z2iY7urJ1RUvaaKt3wKuoUAoS"
  *              option: 3
+ *              from: "0x06309b3B3cf2d6fb5CD0bc0E47f8852f2a2b44e6"
  *      Check-my-vote:
  *          type: object
  *          required:
